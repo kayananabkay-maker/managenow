@@ -1,0 +1,16 @@
+import Image from 'next/image'
+
+// For images in public folder
+<Image 
+  src="/images/hero-image.png" 
+  alt="Description"
+  width={500}
+  height={300}
+/>
+
+// For SVG icons, you can import directly
+import Logo from '@/public/icons/logo.svg'
+<Logo />
+
+// Or use as background in Tailwind
+<div className="bg-[url('/images/background.jpg')]">

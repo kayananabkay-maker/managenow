@@ -1,56 +1,47 @@
 'use client'
 
+import { sidebarLinks } from '@/constants/sidebarLinks'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, DollarSign, ArrowLeftRight, Settings } from 'lucide-react'
 
-const sidebarLinks = [
-  {
-    route: '/',
-    label: 'Home',
-    icon: Home,
-  },
-  {
-    route: '/my-banks',
-    label: 'My Banks',
-    icon: DollarSign,
-  },
-  {
-    route: '/transaction-history',
-    label: 'Transaction History',
-    icon: ArrowLeftRight,
-  },
-  {
-    route: '/settings',
-    label: 'Settings',
-    icon: Settings,
-  },
-]
-
-export default function Sidebar() {
-  const pathname = usePathname()
+const Sidebar = ({ user }: SiderbarProps) => {
+  const pathname = usePathname();
 
   return (
     <section className="sidebar">
       <nav className="flex flex-col gap-4">
-        <Link href="/" className="mb-12 cursor-pointer items-center gap-2 flex">
+        <Link href="/" className="mb-12 cursor-pointer flex items-center gap-2">
+          <Image 
+            src="/icons/logo.svg"
+            width={34}
+            height={34}
+            alt="ManageNow logo"
+            className="size-6 max-xl:size-14"
+          />
           <h1 className="sidebar-logo">ManageNow</h1>
         </Link>
 
         {sidebarLinks.map((item) => {
           const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
-          const Icon = item.icon
-          
+
           return (
-            <Link
-              href={item.route}
-              key={item.label}
-              className={`sidebar-link ${isActive ? 'bg-blue-600 text-white' : ''}`}
+            <Link href={item.route} key={item.label}
+              className={cn('sidebar-link', { 'bg-bank-gradient': isActive })}
             >
               <div className="relative size-6">
-                <Icon className="w-6 h-6" />
+                <Image 
+                  src={item.imgURL}
+                  alt={`${item.label} icon`} 
+                  width={24}
+                  height={24}
+                  className={cn({'brightness-[3] invert-0': isActive })} 
+                />
               </div>
-              <p className="sidebar-label">{item.label}</p>
+              <p className={cn('sidebar-label', { "text-white": isActive })}>
+                {item.label}
+              </p>
             </Link>
           )
         })}
@@ -58,13 +49,21 @@ export default function Sidebar() {
 
       <footer className="footer">
         <div className="footer_name">
-          <p className="text-xl font-bold text-gray-700">U</p>
+          <p className="text-xl font-bold text-gray-700">
+            {user.firstName[0]}
+          </p>
         </div>
         <div className="footer_email">
-          <h1 className="text-14 truncate font-semibold text-gray-700">User</h1>
-          <p className="text-14 truncate font-normal text-gray-600">user@email.com</p>
+          <h1 className="text-14 truncate font-semibold text-gray-700">
+            {user.firstName} {user.lastName}
+          </h1>
+          <p className="text-14 truncate font-normal text-gray-600">
+            {user.email || 'user@email.com'}
+          </p>
         </div>
       </footer>
     </section>
   )
 }
+
+export default Sidebar

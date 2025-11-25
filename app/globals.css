@@ -49,9 +49,66 @@
   justify-content: center;
 }
 
+.text-10 {
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.text-12 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .text-14 {
   font-size: 14px;
   line-height: 20px;
+}
+
+.text-16 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.text-18 {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.text-20 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.text-24 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.text-26 {
+  font-size: 26px;
+  line-height: 36px;
+}
+
+.text-30 {
+  font-size: 30px;
+  line-height: 38px;
+}
+
+.text-36 {
+  font-size: 36px;
+  line-height: 44px;
+}
+
+.header-2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+@media (min-width: 768px) {
+  .header-2 {
+    font-size: 20px;
+  }
 }
 
 /* Sidebar */
@@ -214,13 +271,16 @@
   display: flex;
   width: 100%;
   height: 100%;
-  max-width: 100px;
+  max-width: 120px;
+  min-height: 120px;
   align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 640px) {
   .total-balance-chart {
-    max-width: 120px;
+    max-width: 150px;
+    min-height: 150px;
   }
 }
 
@@ -281,4 +341,107 @@
   .root-layout {
     display: none;
   }
+}
+
+/* Right Sidebar Styles */
+.right-sidebar {
+  display: none;
+  width: 100%;
+  max-width: 420px;
+  flex-direction: column;
+  border-left: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+
+@media (min-width: 1280px) {
+  .right-sidebar {
+    display: flex;
+  }
+}
+
+.profile-banner {
+  height: 120px;
+  width: 100%;
+  background: linear-gradient(90deg, #0179FE 0%, #4893FF 100%);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -3rem;
+}
+
+.profile-img {
+  display: flex;
+  width: 6rem;
+  height: 6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 4px solid #ffffff;
+  background: linear-gradient(90deg, #0179FE 0%, #4893FF 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.profile-email {
+  font-size: 16px;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+.banks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Bank Card Styles */
+.bank-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 1.25rem;
+  background: linear-gradient(90deg, #0179FE 0%, #4893FF 100%);
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-height: 190px;
+}
+
+.bank-card_content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  gap: 1rem;
+}
+
+.bank-card_icon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }

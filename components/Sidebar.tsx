@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Footer from './Footer'
 
 const Sidebar = ({ user }: SiderbarProps) => {
   const pathname = usePathname();
@@ -47,21 +48,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
         })}
       </nav>
 
-      <footer className="footer">
-        <div className="footer_name">
-          <p className="text-xl font-bold text-gray-700">
-            {user.firstName[0]}
-          </p>
-        </div>
-        <div className="footer_email">
-          <h1 className="text-14 truncate font-semibold text-gray-700">
-            {user.firstName} {user.lastName}
-          </h1>
-          <p className="text-14 truncate font-normal text-gray-600">
-            {user.email || 'user@email.com'}
-          </p>
-        </div>
-      </footer>
+      <Footer user={user} />
     </section>
   )
 }

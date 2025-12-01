@@ -1,14 +1,16 @@
-'use client'
-
+import { logoutAccount } from '@/lib/actions/user.actions.mysql'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import React from 'react'
+
 
 const Footer = ({ user, type = 'desktop' }: FooterProps) => {
   const router = useRouter();
 
   const handleLogOut = async () => {
-    // Add logout logic here
-    router.push('/sign-in')
+    const loggedOut = await logoutAccount();
+
+    if(loggedOut) router.push('/sign-in')
   }
 
   return (
@@ -20,16 +22,16 @@ const Footer = ({ user, type = 'desktop' }: FooterProps) => {
       </div>
 
       <div className={type === 'mobile' ? 'footer_email-mobile' : 'footer_email'}>
-        <h1 className="text-14 truncate text-gray-700 font-semibold">
-          {user?.firstName} {user?.lastName}
-        </h1>
-        <p className="text-14 truncate font-normal text-gray-600">
-          {user?.email}
-        </p>
+          <h1 className="text-14 truncate text-gray-700 font-semibold">
+            {user?.firstName}
+          </h1>
+          <p className="text-14 truncate font-normal text-gray-600">
+            {user?.email}
+          </p>
       </div>
 
-      <div className="footer_image" onClick={handleLogOut}>
-        <Image src="/icons/logout.svg" fill alt="logout" />
+      <div className="relative w-5 h-5 cursor-pointer ml-auto" onClick={handleLogOut}>
+        <Image src="/icons/logout.svg" fill alt="logout" className="object-contain" />
       </div>
     </footer>
   )

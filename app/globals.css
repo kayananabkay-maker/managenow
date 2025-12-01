@@ -445,3 +445,31 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
+/* Auth Layout Styles */
+.auth-asset {
+  position: sticky;
+  right: 0;
+  top: 0;
+  display: none;
+  height: 100vh;
+  width: 100%;
+  max-width: 50%;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0179FE 0%, #4893FF 100%);
+}
+
+@media (min-width: 1024px) {
+  .auth-asset {
+    display: flex;
+  }
+}
+
+.auth-asset-image {
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  object-fit: contain;
+}
+

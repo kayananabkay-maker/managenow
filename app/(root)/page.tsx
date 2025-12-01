@@ -2,22 +2,33 @@ import React from 'react'
 import HeaderBox from '@/components/HeaderBox'
 import TotalBalanceBox from '@/components/TotalBalanceBox'
 import RightSidebar from '@/components/RightSidebar';
+import { getLoggedInUser } from '@/lib/actions/user.actions.mysql';
+import { redirect } from 'next/navigation';
 
-const HomePage = () => {
-  const loggedIn: User = { 
-    $id: '1',
-    email: 'nabkay@praditadirgantara.sch.id',
-    userId: '1',
+const HomePage = async () => {
+  // Get the actual logged-in user from the database
+  const loggedIn = await getLoggedInUser();
+  
+  // If no user is logged in, redirect to sign-in page
+  if (!loggedIn) {
+    redirect('/sign-in');
+  }
+
+  // Transform to match User type
+  const user: User = {
+    $id: loggedIn.id,
+    email: loggedIn.email,
+    userId: loggedIn.id,
     dwollaCustomerUrl: '',
     dwollaCustomerId: '',
-    firstName: 'Nabila', 
-    lastName: 'Kayana',
-    name: 'Nabila Kayana',
-    address1: '',
-    city: '',
+    firstName: loggedIn.firstName,
+    lastName: loggedIn.lastName,
+    name: `${loggedIn.firstName} ${loggedIn.lastName}`,
+    address1: loggedIn.address || '',
+    city: loggedIn.city || '',
     state: '',
-    postalCode: '',
-    dateOfBirth: '',
+    postalCode: loggedIn.postalCode || '',
+    dateOfBirth: loggedIn.dateOfBirth || '',
     ssn: ''
   };
 
@@ -71,7 +82,7 @@ const HomePage = () => {
           <HeaderBox 
             type="greeting"
             title="Welcome"
-            user={loggedIn?.firstName || "Guest"}
+            user={user?.firstName || "Guest"}
             subtext="Access and manage your account and transactions efficiently."
           />
 
@@ -86,7 +97,7 @@ const HomePage = () => {
       </div>
 
       <RightSidebar
-       user={loggedIn}
+       user={user}
        transactions={[]}
        banks={accounts.slice(0, 2)}
       />

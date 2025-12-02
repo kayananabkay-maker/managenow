@@ -204,9 +204,9 @@ declare interface BankTabItemProps {
 }
 
 declare interface TotalBalanceBoxProps {
-  accounts: Account[];
-  totalBanks: number;
-  totalCurrentBalance: number;
+  totalIncome: number;
+  totalExpense: number;
+  netBalance: number;
 }
 
 declare interface FooterProps {
@@ -217,7 +217,8 @@ declare interface FooterProps {
 declare interface RightSidebarProps {
   user: User;
   transactions: Transaction[];
-  banks: (Bank | Account)[];
+  upcomingBills?: number;
+  activeGoals?: number;
 }
 
 declare interface SiderbarProps {
@@ -249,7 +250,8 @@ declare interface CategoryProps {
 }
 
 declare interface DoughnutChartProps {
-  accounts: Account[];
+  totalIncome: number;
+  totalExpense: number;
 }
 
 declare interface PaymentTransferFormProps {
@@ -327,4 +329,46 @@ declare interface getBankProps {
 
 declare interface getBankByAccountIdProps {
   accountId: string;
+}
+
+// Financial Management Types
+declare interface CreateTransactionParams {
+  categoryId: number;
+  amount: number;
+  description: string;
+  transactionDate: string;
+  type: 'income' | 'expense';
+  receiptUrl?: string;
+  notes?: string;
+}
+
+declare interface CreateBillParams {
+  name: string;
+  categoryId: number;
+  amount: number;
+  type: 'income' | 'expense';
+  frequency: 'daily' | 'weekly' | 'monthly' | 'yearly' | 'biweekly' | 'quarterly';
+  dueDay: number;
+  startDate: string;
+  endDate?: string;
+  reminderDays: number;
+  autoCreateTransaction: boolean;
+  notes?: string;
+}
+
+declare interface CreateBudgetParams {
+  categoryId: number;
+  allocatedAmount: number;
+  monthYear: string;
+  notes?: string;
+}
+
+declare interface CreateGoalParams {
+  name: string;
+  targetAmount: number;
+  targetDate?: string;
+  category: string;
+  description?: string;
+  icon?: string;
+  color?: string;
 }

@@ -5,32 +5,57 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
-  const accountNames = accounts.map((a) => a.name);
-  const balances = accounts.map((a) => a.currentBalance)
-
+const DoughnutChart = ({ totalIncome, totalExpense }: DoughnutChartProps) => {
+  // If both values are 0, show placeholder data
+  const hasData = totalIncome > 0 || totalExpense > 0;
+  const displayIncome = hasData ? totalIncome : 1;
+  const displayExpense = hasData ? totalExpense : 1;
+  
   const data = {
     datasets: [
       {
-        label: 'Banks',
-        data: balances,
-        backgroundColor: ['#0747b6', '#2265d8', '#2f91fa']
+        label: 'Financial Overview',
+        data: [displayIncome, displayExpense],
+        backgroundColor: ['#10b981', '#ef4444'],
+        borderWidth: 0,
+        hoverOffset: 4
       }
     ],
-    labels: accountNames
+    labels: ['Income', 'Expenses']
   };
 
-  return <Doughnut 
-    data={data} 
-    options={{
-      cutout: '60%',
-      plugins: {
-        legend: {
-          display: false
-        }
-      }
-    }}
-  />;
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <Doughnut 
+        data={data} 
+        options={{
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: '65%',
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              enabled: hasData,
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.parsed;
+                  return `${label}: Rp ${value.toLocaleString('id-ID')}`;
+                }
+              }
+            }
+          }
+        }}
+      />
+      {!hasData && (
+        <div className="absolute text-center">
+          <p className="text-12 text-gray-400">No data</p>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default DoughnutChart;

@@ -28,7 +28,7 @@ export default function RootLayout ({
                         </div>
                         
                         {/* Balance display */}
-                        <div className="mb-6 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
+                        <div className="mb-6 rounded-xl bg-linear-to-r from-blue-500 to-blue-600 p-6 text-white">
                             <p className="text-14 opacity-90">Total Balance</p>
                             <p className="text-36 font-bold">Rp 74,300,000</p>
                             <p className="text-12 opacity-80">Across 3 bank accounts</p>

@@ -1,4 +1,4 @@
-import { logoutAccount } from '@/lib/actions/user.actions.mysql'
+import { logoutAccount } from '@/lib/actions/user.actions.sqlite'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'

@@ -17,8 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-// Using MySQL for local database authentication
-import { signIn, signUp } from '@/lib/actions/user.actions.mysql'
+// Using SQLite for local database authentication
+import { signIn, signUp } from '@/lib/actions/user.actions.sqlite'
 import { authFormSchema } from '@/lib/utils'
 
 const AuthForm = ({ type }: { type: string }) => {

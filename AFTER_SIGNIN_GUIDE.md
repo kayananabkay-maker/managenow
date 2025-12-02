@@ -93,7 +93,6 @@ This is because:
 3. **Dashboard** → View your overview
 4. **My Banks** → See connected accounts
 5. **Transaction History** → Check past transactions
-6. **Transfer Funds** → Make a payment
 7. **Logout** → Click logout icon (bottom left sidebar)
 8. **Sign In Again** → Your session should work!
 

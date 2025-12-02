@@ -2,12 +2,22 @@ import React from 'react'
 import HeaderBox from '@/components/HeaderBox'
 import TotalBalanceBox from '@/components/TotalBalanceBox'
 import RightSidebar from '@/components/RightSidebar';
-import { getLoggedInUser } from '@/lib/actions/user.actions.mysql';
+import RecentTransactions from '@/components/RecentTransactions';
+import { getLoggedInUser } from '@/lib/actions/user.actions.sqlite';
+import { 
+  getRecentTransactions, 
+  getMonthlyIncome, 
+  getMonthlyExpenses,
+  getUpcomingBills,
+  getActiveGoals 
+} from '@/lib/actions/financial.actions';
 import { redirect } from 'next/navigation';
 
 const HomePage = async () => {
   // Get the actual logged-in user from the database
   const loggedIn = await getLoggedInUser();
+  
+  console.log('[Homepage] loggedIn:', loggedIn);
   
   // If no user is logged in, redirect to sign-in page
   if (!loggedIn) {
@@ -24,7 +34,7 @@ const HomePage = async () => {
     firstName: loggedIn.firstName,
     lastName: loggedIn.lastName,
     name: `${loggedIn.firstName} ${loggedIn.lastName}`,
-    address1: loggedIn.address || '',
+    address1: loggedIn.address1 || '',
     city: loggedIn.city || '',
     state: '',
     postalCode: loggedIn.postalCode || '',
@@ -32,48 +42,24 @@ const HomePage = async () => {
     ssn: ''
   };
 
-  // Sample account data
-  const accounts: Account[] = [
-    {
-      id: '1',
-      availableBalance: 35000000,
-      currentBalance: 35550000,
-      officialName: 'Bank Central Asia',
-      mask: '1234',
-      institutionId: 'bca_id',
-      name: 'BCA',
-      type: 'depository',
-      subtype: 'checking',
-      appwriteItemId: 'item_1',
-      shareableId: 'share_1'
-    },
-    {
-      id: '2', 
-      availableBalance: 24500000,
-      currentBalance: 25000000,
-      officialName: 'Bank Mandiri',
-      mask: '5678',
-      institutionId: 'mandiri_id',
-      name: 'Mandiri',
-      type: 'depository',
-      subtype: 'savings',
-      appwriteItemId: 'item_2',
-      shareableId: 'share_2'
-    },
-    {
-      id: '3',
-      availableBalance: 13500000,
-      currentBalance: 13750000,
-      officialName: 'Bank Negara Indonesia',
-      mask: '9012',
-      institutionId: 'bni_id',
-      name: 'BNI',
-      type: 'depository',
-      subtype: 'checking',
-      appwriteItemId: 'item_3',
-      shareableId: 'share_3'
-    }
-  ];
+  // Get financial data
+  const transactions = await getRecentTransactions(loggedIn.id, 10);
+  const monthlyIncome = await getMonthlyIncome(loggedIn.id);
+  const monthlyExpenses = await getMonthlyExpenses(loggedIn.id);
+  const upcomingBillsResult = await getUpcomingBills(loggedIn.id);
+  const activeGoals = await getActiveGoals(loggedIn.id);
+  
+  const upcomingBills = (upcomingBillsResult?.success && Array.isArray(upcomingBillsResult.data)) ? upcomingBillsResult.data : [];
+  const netBalance = monthlyIncome - monthlyExpenses;
+
+  console.log('📊 Homepage Data:', { 
+    monthlyIncome, 
+    monthlyExpenses, 
+    netBalance,
+    transactionCount: Array.isArray(transactions) ? transactions.length : 0,
+    upcomingBillsCount: upcomingBills.length,
+    activeGoalsCount: Array.isArray(activeGoals) ? activeGoals.length : 0
+  });
 
   return (
     <section className="home">
@@ -81,25 +67,26 @@ const HomePage = async () => {
         <header className="home-header">
           <HeaderBox 
             type="greeting"
-            title="Welcome"
+            title="Welcome back"
             user={user?.firstName || "Guest"}
-            subtext="Access and manage your account and transactions efficiently."
+            subtext="Track your income, expenses, and financial goals efficiently."
           />
 
           <TotalBalanceBox
-            accounts={accounts}
-            totalBanks={3}
-            totalCurrentBalance={74300000}
+            totalIncome={monthlyIncome}
+            totalExpense={monthlyExpenses}
+            netBalance={netBalance}
           />
         </header>
         
-        RECENT TRANSACTIONS
+        <RecentTransactions transactions={transactions} />
       </div>
 
       <RightSidebar
        user={user}
-       transactions={[]}
-       banks={accounts.slice(0, 2)}
+       transactions={transactions as Transaction[]}
+       upcomingBills={upcomingBills.length}
+       activeGoals={activeGoals.length}
       />
 
     </section>
